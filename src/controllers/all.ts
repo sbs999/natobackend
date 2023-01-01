@@ -157,3 +157,19 @@ export const updatePerson: RequestHandler = async (req,res,next) => {
 }
 
 
+export const SignIn: RequestHandler = async (req,res,next) => {
+    const password = req.body.password;
+    try {
+      const history = await History.findById('63add4fe312a99c884ab7971');
+      if(!history) {
+        throw new Error("eror in totalMonyInHistory!");
+      }
+      if(history.secPas.toString() === password.toString()) {
+        res.json({message: "წარმატებულია!"})
+      }else{
+      throw new Error("არასწორია პაროლი!");
+      }
+    }catch(error) {
+      next(error);
+    }
+}

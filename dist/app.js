@@ -23,5 +23,6 @@ app.use((error, req, res, next) => {
 });
 mongoose_1.default.connect('mongodb+srv://sabasaba123:sabasaba123@cluster0.5pewmdl.mongodb.net/shop?retryWrites=true&w=majority')
     .then(() => {
-    app.listen(8080);
+    const port = process.env.PORT || 8080;
+    app.listen(port);
 });

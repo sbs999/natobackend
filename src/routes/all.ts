@@ -1,8 +1,9 @@
 import {Router} from "express";
-import { addPerson,getPersons,addMoney,payMoney,getPersonsFromHistory,updatePerson } from "../controllers/all";
+import { addPerson,getPersons,addMoney,payMoney,getPersonsFromHistory,updatePerson,SignIn } from "../controllers/all";
 
 const router = Router();
 
+router.post("/signIn",SignIn);
 router.post("/addPerson",addPerson);
 router.get("/getPerson",getPersons);
 router.post("/addMoney",addMoney);

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const all_1 = require("../controllers/all");
 const router = (0, express_1.Router)();
+router.post("/signIn", all_1.SignIn);
 router.post("/addPerson", all_1.addPerson);
 router.get("/getPerson", all_1.getPersons);
 router.post("/addMoney", all_1.addMoney);

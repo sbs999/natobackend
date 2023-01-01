@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePerson = exports.getPersonsFromHistory = exports.payMoney = exports.addMoney = exports.getPersons = exports.addPerson = void 0;
+exports.SignIn = exports.updatePerson = exports.getPersonsFromHistory = exports.payMoney = exports.addMoney = exports.getPersons = exports.addPerson = void 0;
 const Person_1 = __importDefault(require("../models/Person"));
 const History_1 = __importDefault(require("../models/History"));
 const addPerson = async (req, res, next) => {
@@ -159,3 +159,23 @@ const updatePerson = async (req, res, next) => {
     }
 };
 exports.updatePerson = updatePerson;
+const SignIn = async (req, res, next) => {
+    const password = req.body.password;
+    try {
+        const history = await History_1.default.findById('63add4fe312a99c884ab7971');
+        if (!history) {
+            throw new Error("eror in totalMonyInHistory!");
+        }
+    
+        if (history.secPas.toString() === password.toString()) {
+            res.json({ message: "წარმატებულია!" });
+        }
+        else {
+            throw new Error("არასწორია პაროლი!");
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+};
+exports.SignIn = SignIn;
