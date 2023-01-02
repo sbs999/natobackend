@@ -1,26 +1,27 @@
 import {RequestHandler} from "express";
 import Person from "../models/Person";
 import History from "../models/History";
-interface PersonType {
-    name: string,
-    surname: string,
-    money: number,
-    info?: string,
-    mobNumber?: string,
-    histroyStatus: {status: string,id: string}
-}
+// interface PersonType {
+//     name: string,
+//     surname: string,
+//     money: number,
+//     info?: string,
+//     mobNumber?: string,
+//     histroyStatus: {status: string,id: string}
+// }
 export const addPerson: RequestHandler = async (req,res,next) => {
-     const money = (req.body as PersonType).money;
+    const {name,surname,personInfo,debtInfo,money,mobNumber,histroyStatus} = req.body;
      const date = {year: new Date().getFullYear(),month: new Date().getMonth(),day: new Date().getDate(),hour: new Date().getHours(),minute: new Date().getMinutes()};
-     const payment = [{status: "add",money: +money,date: date,info: (req.body as PersonType).info || "",sumOfMoney: money}];
-     const allDatas = {...req.body,payment: payment,status: "NotInHistory"}
+     const payment = [{status: "add",money: +money,date: date,info: debtInfo || "",sumOfMoney: money}];
+     const allDatas = {name: name,surname: surname,info: personInfo,money: money,mobNumber: mobNumber,payment: payment,status: "NotInHistory"};
+     
      try {
       const history = await History.findById('63add4fe312a99c884ab7971');
       if(!history) {
         throw new Error("eror in totalMonyInHistory!");
       }
-      if(req.body.histroyStatus.status === "history") {
-        history.people =  history.people.filter(p => "_id" in p ? p._id?.toString() !== req.body.histroyStatus.id.toString() : true);
+      if(histroyStatus.status === "history") {
+        history.people =  history.people.filter(p => "_id" in p ? p._id?.toString() !== histroyStatus.id.toString() : true);
       }
        const newPerson =  new Person(allDatas);
         const add = await newPerson.save();
@@ -53,6 +54,7 @@ export const addMoney: RequestHandler = async (req,res,next) => {
       throw new Error("ასეთი ადამიანი არ არსებობს!");
     }
     person.money += money; 
+    person.money = +person.money.toFixed(2);
    const payment = {status: "add",money: +money,date: date,info: req.body.info || "",sumOfMoney: person.money};
     person.payment.push(payment);
     const result = await person.save();
@@ -62,6 +64,7 @@ export const addMoney: RequestHandler = async (req,res,next) => {
       throw new Error("eror in totalMonyInHistory!");
     }
     totalMonyInHistory.totalMoney +=  money; 
+    totalMonyInHistory.totalMoney = +totalMonyInHistory.totalMoney.toFixed(2);
      await totalMonyInHistory.save();
     //  
     res.json({result: result})
@@ -125,7 +128,7 @@ export const getPersonsFromHistory: RequestHandler = async (req,res,next) => {
 }
 
 export const updatePerson: RequestHandler = async (req,res,next) => {
-   const {name,surname,money,info,mobNumber,id} = req.body;
+   const {name,surname,money,updateInfo,personInfo,mobNumber,id} = req.body;
    try {
      const person = await Person.findById(id);
      if(!person) {
@@ -133,7 +136,7 @@ export const updatePerson: RequestHandler = async (req,res,next) => {
      }
      person.name = name;
      person.surname = surname;
-     person.info = info;
+     person.info = personInfo;
      person.mobNumber = mobNumber;
      if(money !== person.money) {
       const history = await History.findById('63add4fe312a99c884ab7971');
@@ -142,11 +145,12 @@ export const updatePerson: RequestHandler = async (req,res,next) => {
       }
       history.totalMoney -= person.money;
       history.totalMoney += money;
+      history.totalMoney = +history.totalMoney.toFixed(2);
       await history.save();
       // 
       person.money = money;
       const date = {year: new Date().getFullYear(),month: new Date().getMonth(),day: new Date().getDate(),hour: new Date().getHours(),minute: new Date().getMinutes()};
-      const payment = {status: "edit",money: +money,date: date,info: "",sumOfMoney: +money};
+      const payment = {status: "edit",money: +money,date: date,info: updateInfo,sumOfMoney: +money};
       person.payment.push(payment);
      }
      await person.save();
