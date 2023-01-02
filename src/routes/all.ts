@@ -1,5 +1,5 @@
 import {Router} from "express";
-import { addPerson,getPersons,addMoney,payMoney,getPersonsFromHistory,updatePerson,SignIn } from "../controllers/all";
+import { addPerson,getPersons,addMoney,payMoney,getPersonsFromHistory,updatePerson,SignIn,getTotalMoney } from "../controllers/all";
 
 const router = Router();
 
@@ -10,4 +10,5 @@ router.post("/addMoney",addMoney);
 router.post("/payMoney",payMoney);
 router.get("/getPersonsFromHistory",getPersonsFromHistory);
 router.post("/updatePerson",updatePerson);
+router.get("/getTotalMoney",getTotalMoney);
 export default router;

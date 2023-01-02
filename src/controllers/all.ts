@@ -173,3 +173,13 @@ export const SignIn: RequestHandler = async (req,res,next) => {
       next(error);
     }
 }
+
+
+export const getTotalMoney: RequestHandler = async (req,res,next) => {
+  try {
+    const history = await History.findById('63add4fe312a99c884ab7971');
+    res.json({totalMoney: history?.totalMoney});
+  }catch(error) {
+    next(error);
+  }
+}

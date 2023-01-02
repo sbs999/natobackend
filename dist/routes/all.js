@@ -10,4 +10,5 @@ router.post("/addMoney", all_1.addMoney);
 router.post("/payMoney", all_1.payMoney);
 router.get("/getPersonsFromHistory", all_1.getPersonsFromHistory);
 router.post("/updatePerson", all_1.updatePerson);
+router.get("/getTotalMoney", all_1.getTotalMoney);
 exports.default = router;

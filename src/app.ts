@@ -6,6 +6,7 @@ const app = express();
 
 app.use(json());
 // mongoose.set('strictQuery', false);
+
 app.use((req: Request, res: Response, next: NextFunction) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
@@ -20,7 +21,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     const message = error.message;
     res.status(400).json(message);
   })
-   
+
   mongoose.connect('mongodb+srv://sabasaba123:sabasaba123@cluster0.5pewmdl.mongodb.net/shop?retryWrites=true&w=majority')
   .then(() => {
     const port = process.env.PORT || 8080;
