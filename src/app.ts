@@ -28,7 +28,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   // const date = {year: new Datje().getFullYear(),month: new Date().getMonth(),day: new Date().getDate(),hour: new Date().getHours(),minute: new Date().getMinutes()};
   // console.log(date);
   console.log('process.env.MONGODB_URL',process.env.MONGODB_URL);
-  mongoose.connect('mongodb+srv://sabasaba123:sabasaba123@cluster0.5pewmdl.mongodb.net/shop?retryWrites=true&w=majority')
+  const mongoUrl = process.env.MONGODB_URL || "";
+  mongoose.connect(mongoUrl)
   .then(() => {
     const port = process.env.PORT || 8080;
       app.listen(port);
