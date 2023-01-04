@@ -7,6 +7,7 @@ const app = express();
 import dotenv from "dotenv";
 dotenv.config();
 // 
+
 app.use(json());
 // mongoose.set('strictQuery', false);
 const portStatus = process.env.PORT ? "https://sbs999.github.io" : "http://localhost:3000";

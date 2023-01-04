@@ -6,17 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTotalMoney = exports.SignIn = exports.updatePerson = exports.getPersonsFromHistory = exports.payMoney = exports.addMoney = exports.getPersons = exports.addPerson = void 0;
 const Person_1 = __importDefault(require("../models/Person"));
 const History_1 = __importDefault(require("../models/History"));
-// interface PersonType {
-//     name: string,
-//     surname: string,
-//     money: number,
-//     info?: string,
-//     mobNumber?: string,
-//     histroyStatus: {status: string,id: string}
-// }
 const addPerson = async (req, res, next) => {
     const { name, surname, personInfo, debtInfo, money, mobNumber, histroyStatus } = req.body;
-    const date = { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate(), hour: new Date().getHours(), minute: new Date().getMinutes() };
+    const minute = new Date().getMinutes() - (new Date().getTimezoneOffset() % 60);
+    const hours = new Date().getHours() - parseInt((new Date().getTimezoneOffset() / 60).toString());
+    const date = { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate(), hour: hours, minute: minute };
     const payment = [{ status: "add", money: +money, date: date, info: debtInfo || "", sumOfMoney: money }];
     const allDatas = { name: name, surname: surname, info: personInfo, money: money, mobNumber: mobNumber, payment: payment, status: "NotInHistory" };
     try {
@@ -31,6 +25,7 @@ const addPerson = async (req, res, next) => {
         const add = await newPerson.save();
         // 
         history.totalMoney += money;
+        history.totalMoney = +history.totalMoney.toFixed(2);
         await history.save();
         //  
         res.json({ result: add });
@@ -153,6 +148,7 @@ const updatePerson = async (req, res, next) => {
                 throw new Error("eror in totalMonyInHistory!");
             }
             history.totalMoney -= person.money;
+            history.totalMoney = +history.totalMoney.toFixed(2);
             history.totalMoney += money;
             history.totalMoney = +history.totalMoney.toFixed(2);
             await history.save();

@@ -27,9 +27,6 @@ app.use((error, req, res, next) => {
     const message = error.message;
     res.status(400).json(message);
 });
-// const date = {year: new Datje().getFullYear(),month: new Date().getMonth(),day: new Date().getDate(),hour: new Date().getHours(),minute: new Date().getMinutes()};
-// console.log(date);
-console.log('process.env.MONGODB_URL', process.env.MONGODB_URL);
 const mongoUrl = process.env.MONGODB_URL || "";
 mongoose_1.default.connect(mongoUrl)
     .then(() => {
