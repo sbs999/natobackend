@@ -1,14 +1,7 @@
 import {RequestHandler} from "express";
 import Person from "../models/Person";
 import History from "../models/History";
-// interface PersonType {
-//     name: string,
-//     surname: string,
-//     money: number,
-//     info?: string,
-//     mobNumber?: string,
-//     histroyStatus: {status: string,id: string}
-// }
+
 export const addPerson: RequestHandler = async (req,res,next) => {
     const {name,surname,personInfo,debtInfo,money,mobNumber,histroyStatus} = req.body;
      const date = {year: new Date().getFullYear(),month: new Date().getMonth(),day: new Date().getDate(),hour: new Date().getHours(),minute: new Date().getMinutes()};
@@ -27,6 +20,7 @@ export const addPerson: RequestHandler = async (req,res,next) => {
         const add = await newPerson.save();
         // 
         history.totalMoney +=  money; 
+        history.totalMoney = +history.totalMoney.toFixed(2);
          await history.save();
         //  
         res.json({result: add})
@@ -144,6 +138,7 @@ export const updatePerson: RequestHandler = async (req,res,next) => {
         throw new Error("eror in totalMonyInHistory!");
       }
       history.totalMoney -= person.money;
+      history.totalMoney = +history.totalMoney.toFixed(2);
       history.totalMoney += money;
       history.totalMoney = +history.totalMoney.toFixed(2);
       await history.save();
