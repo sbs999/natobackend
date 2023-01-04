@@ -10,6 +10,7 @@ const addPerson = async (req, res, next) => {
     const { name, surname, personInfo, debtInfo, money, mobNumber, histroyStatus } = req.body;
     const minute = new Date().getMinutes() - (new Date().getTimezoneOffset() % 60);
     const hours = new Date().getHours() - parseInt((new Date().getTimezoneOffset() / 60).toString());
+    console.log(minute, hours);
     const date = { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate(), hour: hours, minute: minute };
     const payment = [{ status: "add", money: +money, date: date, info: debtInfo || "", sumOfMoney: money }];
     const allDatas = { name: name, surname: surname, info: personInfo, money: money, mobNumber: mobNumber, payment: payment, status: "NotInHistory" };
