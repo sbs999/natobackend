@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTotalMoney = exports.SignIn = exports.updatePerson = exports.getPersonsFromHistory = exports.payMoney = exports.addMoney = exports.getPersons = exports.addPerson = void 0;
 const Person_1 = __importDefault(require("../models/Person"));
 const History_1 = __importDefault(require("../models/History"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const addPerson = async (req, res, next) => {
     const { name, surname, personInfo, debtInfo, money, mobNumber, histroyStatus } = req.body;
     const date = { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate(), hour: new Date().getHours() + 4, minute: new Date().getMinutes() };
@@ -172,7 +173,8 @@ const SignIn = async (req, res, next) => {
             throw new Error("eror in totalMonyInHistory!");
         }
         if (history.secPas.toString() === password.toString()) {
-            res.json({ message: "წარმატებულია!" });
+            const token = jsonwebtoken_1.default.sign({}, "MyTokenIsVerySafeDontTrySomthingBoolshitBySbsMaster!");
+            res.json({ message: "წარმატებულია!", token: token });
         }
         else {
             throw new Error("არასწორია პაროლი!");

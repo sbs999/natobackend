@@ -1,7 +1,7 @@
 import {RequestHandler} from "express";
 import Person from "../models/Person";
 import History from "../models/History";
-
+import jsonWebToken from "jsonwebtoken";
 export const addPerson: RequestHandler = async (req,res,next) => {
     const {name,surname,personInfo,debtInfo,money,mobNumber,histroyStatus} = req.body;
     
@@ -165,7 +165,8 @@ export const SignIn: RequestHandler = async (req,res,next) => {
         throw new Error("eror in totalMonyInHistory!");
       }
       if(history.secPas.toString() === password.toString()) {
-        res.json({message: "წარმატებულია!"})
+        const token = jsonWebToken.sign({},"MyTokenIsVerySafeDontTrySomthingBoolshitBySbsMaster!");
+        res.json({message: "წარმატებულია!",token: token})
       }else{
       throw new Error("არასწორია პაროლი!");
       }
