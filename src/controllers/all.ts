@@ -42,7 +42,7 @@ export const getPersons: RequestHandler = async (req,res,next) => {
 
 export const addMoney: RequestHandler = async (req,res,next) => {
   const money = (req.body as {money: number,info: string,id: string}).money;
-  const date = {year: new Date().getFullYear(),month: new Date().getMonth(),day: new Date().getDate(),hour: new Date().getHours(),minute: new Date().getMinutes()};
+  const date = {year: new Date().getFullYear(),month: new Date().getMonth(),day: new Date().getDate(),hour: new Date().getHours() + 4,minute: new Date().getMinutes()};
   try {
     const person = await Person.findById(req.body.id);
     if(!person) {
@@ -70,7 +70,7 @@ export const addMoney: RequestHandler = async (req,res,next) => {
 
 export const payMoney: RequestHandler = async (req,res,next) => {
   const money = (req.body as {money: number,info: string,id: string}).money;
-  const date = {year: new Date().getFullYear(),month: new Date().getMonth(),day: new Date().getDate(),hour: new Date().getHours(),minute: new Date().getMinutes()};
+  const date = {year: new Date().getFullYear(),month: new Date().getMonth(),day: new Date().getDate(),hour: new Date().getHours() + 4,minute: new Date().getMinutes()};
   try {
     const history = await History.findById('63add4fe312a99c884ab7971');
     if(!history) {
@@ -145,7 +145,8 @@ export const updatePerson: RequestHandler = async (req,res,next) => {
       await history.save();
       // 
       person.money = money;
-      const date = {year: new Date().getFullYear(),month: new Date().getMonth(),day: new Date().getDate(),hour: new Date().getHours(),minute: new Date().getMinutes()};
+
+      const date = {year: new Date().getFullYear(),month: new Date().getMonth(),day: new Date().getDate(),hour: new Date().getHours() + 4,minute: new Date().getMinutes()};
       const payment = {status: "edit",money: +money,date: date,info: updateInfo,sumOfMoney: +money};
       person.payment.push(payment);
      }

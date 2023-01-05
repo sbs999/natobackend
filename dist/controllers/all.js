@@ -47,7 +47,7 @@ const getPersons = async (req, res, next) => {
 exports.getPersons = getPersons;
 const addMoney = async (req, res, next) => {
     const money = req.body.money;
-    const date = { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate(), hour: new Date().getHours(), minute: new Date().getMinutes() };
+    const date = { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate(), hour: new Date().getHours() + 4, minute: new Date().getMinutes() };
     try {
         const person = await Person_1.default.findById(req.body.id);
         if (!person) {
@@ -76,7 +76,7 @@ const addMoney = async (req, res, next) => {
 exports.addMoney = addMoney;
 const payMoney = async (req, res, next) => {
     const money = req.body.money;
-    const date = { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate(), hour: new Date().getHours(), minute: new Date().getMinutes() };
+    const date = { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate(), hour: new Date().getHours() + 4, minute: new Date().getMinutes() };
     try {
         const history = await History_1.default.findById('63add4fe312a99c884ab7971');
         if (!history) {
@@ -153,7 +153,7 @@ const updatePerson = async (req, res, next) => {
             await history.save();
             // 
             person.money = money;
-            const date = { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate(), hour: new Date().getHours(), minute: new Date().getMinutes() };
+            const date = { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate(), hour: new Date().getHours() + 4, minute: new Date().getMinutes() };
             const payment = { status: "edit", money: +money, date: date, info: updateInfo, sumOfMoney: +money };
             person.payment.push(payment);
         }
