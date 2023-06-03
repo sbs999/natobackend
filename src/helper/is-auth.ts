@@ -1,17 +1,22 @@
 import jsonWebToken from "jsonwebtoken";
 import { RequestHandler } from "express";
-const isAuth: RequestHandler = async (req,res,next) => {
-    const token = req.get('Authorization');
-    try{
-        if(!token) {
-            throw new Error("error!");
-        }
-       const tokenVerify = await jsonWebToken.verify(token,'MyTokenIsVerySafeDontTrySomthingBoolshitBySbsMaster!');
-    }catch(err){
-       next(err);
+import dotenv from "dotenv";
+dotenv.config();
+
+const isAuth: RequestHandler = async (req, res, next) => {
+  const token = req.get("Authorization");
+  try {
+    if (!token) {
+      throw new Error("error!");
     }
-    next();
+    const tokenVerify = await jsonWebToken.verify(
+      token,
+      process.env.JSON_WEB_TOKEN || ""
+    );
+  } catch (err) {
+    next(err);
+  }
+  next();
 };
 
-
-export default isAuth
+export default isAuth;
