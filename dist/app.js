@@ -6,7 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = require("body-parser");
 const mongoose_1 = __importDefault(require("mongoose"));
-const all_1 = __importDefault(require("./routes/all"));
+const auth_1 = __importDefault(require("./routes/auth"));
+const person_1 = __importDefault(require("./routes/person"));
+const payment_1 = __importDefault(require("./routes/payment"));
 const app = (0, express_1.default)();
 //
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -23,7 +25,9 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     next();
 });
-app.use(all_1.default);
+app.use(auth_1.default);
+app.use(person_1.default);
+app.use(payment_1.default);
 app.use((error, req, res, next) => {
     const message = error.message;
     res.status(400).json(message);

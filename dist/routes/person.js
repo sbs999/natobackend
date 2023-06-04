@@ -22,42 +22,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importStar(require("mongoose"));
-const HistorySchema = new mongoose_1.Schema({
-    totalMoney: {
-        type: Number,
-        required: true,
-    },
-    people: {
-        type: [
-            {
-                name: String,
-                surname: String,
-                info: String,
-                mobNumber: String,
-                lastPaymentHistory: [
-                    {
-                        status: String,
-                        money: Number,
-                        sumOfMoney: Number,
-                        date: {
-                            year: Number,
-                            month: Number,
-                            day: Number,
-                            hour: Number,
-                            minute: Number,
-                        },
-                        info: String,
-                    },
-                ],
-            },
-        ],
-        required: true,
-    },
-    secPas: {
-        type: Number,
-        required: true,
-    },
-}, { timestamps: true });
-exports.default = mongoose_1.default.model("History", HistorySchema);
+const express_1 = require("express");
+const is_auth_1 = __importDefault(require("../middlewares/is-auth"));
+const personFuncs = __importStar(require("../controllers/person"));
+const router = (0, express_1.Router)();
+router.post("/addPerson", is_auth_1.default, personFuncs.addPerson);
+router.get("/getPerson", is_auth_1.default, personFuncs.getPersons);
+router.get("/getPersonsFromHistory", is_auth_1.default, personFuncs.getPersonsFromHistory);
+router.post("/updatePerson", is_auth_1.default, personFuncs.updatePerson);
+exports.default = router;

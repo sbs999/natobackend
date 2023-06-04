@@ -1,19 +1,43 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const HistorySchema = new Schema({
+const HistorySchema = new Schema(
+  {
     totalMoney: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     people: {
-        type: [{name: String,surname: String,info: String,mobNumber: String,lastPaymentHistory: [{status: String,money: Number,sumOfMoney: Number,date: {year: Number,month: Number,day: Number,hour: Number,minute: Number},info: String}]}],
-        required: true
+      type: [
+        {
+          name: String,
+          surname: String,
+          info: String,
+          mobNumber: String,
+          lastPaymentHistory: [
+            {
+              status: String,
+              money: Number,
+              sumOfMoney: Number,
+              date: {
+                year: Number,
+                month: Number,
+                day: Number,
+                hour: Number,
+                minute: Number,
+              },
+              info: String,
+            },
+          ],
+        },
+      ],
+      required: true,
     },
     secPas: {
-        type: Number,
-        required: true
-    }
-},{timestamps: true});
+      type: Number,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
-export default mongoose.model("History",HistorySchema);
-
+export default mongoose.model("History", HistorySchema);

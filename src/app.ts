@@ -1,7 +1,9 @@
 import express, { Request, Response, NextFunction } from "express";
 import { json } from "body-parser";
 import mongoose from "mongoose";
-import router from "./routes/all";
+import authRouter from "./routes/auth";
+import personsRouter from "./routes/person";
+import paymentRouter from "./routes/payment";
 
 const app = express();
 
@@ -26,7 +28,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-app.use(router);
+app.use(authRouter);
+app.use(personsRouter);
+app.use(paymentRouter);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   const message = error.message;
