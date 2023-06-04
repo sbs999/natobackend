@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import authRouter from "./routes/auth";
 import personsRouter from "./routes/person";
 import paymentRouter from "./routes/payment";
+import noteRouter from "./routes/note";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use(authRouter);
 app.use(personsRouter);
 app.use(paymentRouter);
+app.use(noteRouter);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   const message = error.message;
