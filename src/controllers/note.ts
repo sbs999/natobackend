@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import Note from "../models/Note";
+import { getDate } from "../helper";
 
 export const postText: RequestHandler = async (req, res, next) => {
   try {
@@ -28,7 +29,10 @@ export const getText: RequestHandler = async (req, res, next) => {
       throw new Error("ჩანაწერი ვერ მოიძებნა.");
     }
 
-    res.json({ text: note.text.trim() });
+    res.json({
+      text: note.text.trim(),
+      date: getDate(note.updatedAt),
+    });
   } catch (error) {
     next(error);
   }

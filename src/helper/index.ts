@@ -1,10 +1,10 @@
-const getDate = () => {
+const getDate = (date?: Date) => {
   return {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth(),
-    day: new Date().getDate(),
-    hour: new Date().getHours() + 4,
-    minute: new Date().getMinutes(),
+    year: date ? date.getFullYear() : new Date().getFullYear(),
+    month: date ? date.getMonth() : new Date().getMonth(),
+    day: date ? date.getDate() : new Date().getDate(),
+    hour: date ? date.getHours() : new Date().getHours() + 4,
+    minute: date ? date.getMinutes() : new Date().getMinutes(),
   };
 };
 

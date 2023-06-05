@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getText = exports.postText = void 0;
 const Note_1 = __importDefault(require("../models/Note"));
+const helper_1 = require("../helper");
 const postText = async (req, res, next) => {
     try {
         if (!("text" in req.body && typeof req.body.text === "string")) {
@@ -29,7 +30,10 @@ const getText = async (req, res, next) => {
         if (!note) {
             throw new Error("ჩანაწერი ვერ მოიძებნა.");
         }
-        res.json({ text: note.text.trim() });
+        res.json({
+            text: note.text.trim(),
+            date: (0, helper_1.getDate)(note.updatedAt),
+        });
     }
     catch (error) {
         next(error);
