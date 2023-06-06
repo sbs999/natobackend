@@ -5,6 +5,7 @@ import authRouter from "./routes/auth";
 import personsRouter from "./routes/person";
 import paymentRouter from "./routes/payment";
 import noteRouter from "./routes/note";
+import statisticsRouter from "./routes/statistics";
 
 const app = express();
 
@@ -14,7 +15,8 @@ dotenv.config();
 //
 
 app.use(json());
-// mongoose.set('strictQuery', false);
+mongoose.set("strictQuery", false);
+
 const portStatus = process.env.PORT
   ? "https://sbs999.github.io"
   : "http://localhost:3000";
@@ -33,6 +35,7 @@ app.use(authRouter);
 app.use(personsRouter);
 app.use(paymentRouter);
 app.use(noteRouter);
+app.use(statisticsRouter);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   const message = error.message;

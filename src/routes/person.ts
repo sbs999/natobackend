@@ -8,5 +8,6 @@ router.post("/addPerson", isAuth, personFuncs.addPerson);
 router.get("/getPerson", isAuth, personFuncs.getPersons);
 router.get("/getPersonsFromHistory", isAuth, personFuncs.getPersonsFromHistory);
 router.post("/updatePerson", isAuth, personFuncs.updatePerson);
+router.delete("/removePerson/:id", isAuth, personFuncs.removePersonFromHistory);
 
 export default router;

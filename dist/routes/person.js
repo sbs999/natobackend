@@ -34,4 +34,5 @@ router.post("/addPerson", is_auth_1.default, personFuncs.addPerson);
 router.get("/getPerson", is_auth_1.default, personFuncs.getPersons);
 router.get("/getPersonsFromHistory", is_auth_1.default, personFuncs.getPersonsFromHistory);
 router.post("/updatePerson", is_auth_1.default, personFuncs.updatePerson);
+router.delete("/removePerson/:id", is_auth_1.default, personFuncs.removePersonFromHistory);
 exports.default = router;

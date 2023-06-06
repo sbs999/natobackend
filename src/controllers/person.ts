@@ -1,67 +1,26 @@
 import { RequestHandler } from "express";
-import Person from "../models/Person";
-import History from "../models/History";
 import { getDate } from "../helper";
+import * as Types from "../interfaces/persons";
+import * as service from "../services/person";
 
 export const addPerson: RequestHandler = async (req, res, next) => {
-  const body = req.body;
-
-  const date = getDate();
-
-  const payment = [
-    {
-      status: "add",
-      money: +body.money,
-      date: date,
-      info: body.debtInfo || "",
-      sumOfMoney: body.money,
-    },
-  ];
-
-  const allDatas = {
-    name: body.name,
-    surname: body.surname,
-    info: body.personInfo,
-    money: body.money,
-    mobNumber: body.mobNumber,
-    payment: payment,
-    status: "NotInHistory",
-  };
+  const body: Types.AddPersonType = req.body;
+  const date: Types.DateType = getDate();
 
   try {
-    const history = await History.findById("63add4fe312a99c884ab7971");
-    if (!history) {
-      throw new Error("eror in totalMonyInHistory!");
-    }
+    const newPerson = await service.addPersonLogic({ ...body, date });
 
-    // აქ ის ლოგიკაა რო თუ ისტორიიდან ვამატებ ტიპს, მაშინ ვშლი ისტორიიდან./
-    if (body.histroyStatus.status === "history") {
-      history.people = history.people.filter((p) =>
-        "_id" in p
-          ? p._id?.toString() !== body.histroyStatus.id.toString()
-          : true
-      );
-    }
-
-    const newPerson = new Person(allDatas);
-    const add = await newPerson.save();
-
-    history.totalMoney += body.money;
-    history.totalMoney = +history.totalMoney.toFixed(2);
-    await history.save();
-
-    res.json({ result: add });
-  } catch (error) {
-    console.log(error);
-    next(error);
+    res.json({ result: newPerson });
+  } catch (eror) {
+    next(eror);
   }
 };
 
 export const getPersons: RequestHandler = async (req, res, next) => {
   try {
-    const api = await Person.find();
+    const persons = await service.getPersonLogic();
 
-    res.json({ persons: api });
+    res.json({ persons });
   } catch (error) {
     next(error);
   }
@@ -69,58 +28,37 @@ export const getPersons: RequestHandler = async (req, res, next) => {
 
 export const getPersonsFromHistory: RequestHandler = async (req, res, next) => {
   try {
-    const history = await History.findById("63add4fe312a99c884ab7971");
+    const persons = await service.getPersonsFromHistoryLogic();
 
-    res.json({ persons: history?.people });
+    res.json({ persons });
   } catch (error) {
     next(error);
   }
 };
 
 export const updatePerson: RequestHandler = async (req, res, next) => {
-  const { name, surname, money, updateInfo, personInfo, mobNumber, id } =
-    req.body;
+  const body: Types.UpdatePersonType = req.body;
 
   try {
-    const person = await Person.findById(id);
-    if (!person) {
-      throw new Error("შეცდომაა! ასეთი ადამიანი სიაში ვერ ვიპოვე!");
-    }
+    await service.updatePersonLogic(body);
 
-    person.name = name;
-    person.surname = surname;
-    person.info = personInfo;
-    person.mobNumber = mobNumber;
-
-    // თუ თანხა იცვლება მხოლოდ მაშინ ხდება მთლიანი თანხის შეცვლა და იუზერის ფეიმენთებში დამატება როგორც თანხის ედით სტატუსი.
-    if (money !== person.money) {
-      const history = await History.findById("63add4fe312a99c884ab7971");
-      if (!history) {
-        throw new Error("eror in totalMonyInHistory!");
-      }
-
-      history.totalMoney -= person.money;
-      history.totalMoney = +history.totalMoney.toFixed(2);
-      history.totalMoney += money;
-      history.totalMoney = +history.totalMoney.toFixed(2);
-      await history.save();
-
-      person.money = money;
-
-      const date = getDate();
-
-      const payment = {
-        status: "edit",
-        money: +money,
-        date: date,
-        info: updateInfo,
-        sumOfMoney: +money,
-      };
-      person.payment.push(payment);
-    }
-
-    await person.save();
     res.json({ result: "წარმატებულია!" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const removePersonFromHistory: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  const id = req.params.id;
+
+  try {
+    await service.removePersonFromHistoryLogic(id);
+
+    res.json({ message: "delete successfuly!" });
   } catch (error) {
     next(error);
   }

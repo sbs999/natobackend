@@ -26,13 +26,6 @@ const addMoney = async (req, res, next) => {
         };
         person.payment.push(payment);
         const result = await person.save();
-        const totalMonyInHistory = await History_1.default.findById("63add4fe312a99c884ab7971");
-        if (!totalMonyInHistory) {
-            throw new Error("eror in totalMonyInHistory!");
-        }
-        totalMonyInHistory.totalMoney += money;
-        totalMonyInHistory.totalMoney = +totalMonyInHistory.totalMoney.toFixed(2);
-        await totalMonyInHistory.save();
         res.json({ result: result });
     }
     catch (error) {
@@ -44,20 +37,20 @@ const payMoney = async (req, res, next) => {
     const money = req.body.money;
     const date = (0, helper_1.getDate)();
     try {
-        const history = await History_1.default.findById("63add4fe312a99c884ab7971");
-        if (!history) {
-            throw new Error("eror in totalMonyInHistory!");
-        }
         const person = await Person_1.default.findById(req.body.id);
         if (!person) {
             throw new Error("ასეთი ადამიანი არ არსებობს!");
         }
+        // ვჩეკავ ფული მეტი ხო არ ჩარიცხა რაც ვალია
         if (money > person.money) {
             throw new Error("არასწორად შეყვანილი თანხა, სცადეთ თავიდან!");
-            // ვჩეკავ ფული მეტი ხო არ ჩარიცხა რაც ვალია
         }
+        //ვალს სრულად იხდის თუ არა და თუ სრულად იხდის ვშლი ვალების სიიდან და ვამატებ ისტორიების სიაში.
         if (money === person.money) {
-            // ვჩეკავ ვალს სრულად იხდის თუ არა და თუ სრულად იხდის ვშლი ვალების სიიდან და ვამატებ ისტორიების სიაში.
+            const history = await History_1.default.findById("63add4fe312a99c884ab7971");
+            if (!history) {
+                throw new Error("eror in totalMonyInHistory!");
+            }
             history.people.push({
                 name: person.name,
                 surname: person.surname,
@@ -65,17 +58,13 @@ const payMoney = async (req, res, next) => {
                 mobNumber: person.mobNumber,
                 lastPaymentHistory: person.payment,
             });
-            history.totalMoney -= person.money;
-            history.totalMoney = +history.totalMoney.toFixed(2);
             await history.save();
-            //
             await Person_1.default.findByIdAndDelete(person._id);
             res.json({ result: "succesfully add!" });
             return;
         }
-        //  და ბოლოს თუ უბრალოდ ვალის რაღაც ნაწილს იხდის ვაკლებ ვალს ისტრიაშიც და ადამინთან
-        person.money -= money;
-        person.money = +person.money.toFixed(2);
+        //  და ბოლოს თუ უბრალოდ ვალის რაღაც ნაწილს იხდის ვაკლებ ვალს ისტორიაშიც და ადამინთან
+        person.money = +(person.money - money).toFixed(2);
         const payment = {
             status: "pay",
             money: +money,
@@ -85,9 +74,6 @@ const payMoney = async (req, res, next) => {
         };
         person.payment.push(payment);
         const result = await person.save();
-        history.totalMoney -= money;
-        history.totalMoney = +history.totalMoney.toFixed(2);
-        await history.save();
         res.json({ result: result });
     }
     catch (error) {

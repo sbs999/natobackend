@@ -10,13 +10,14 @@ const auth_1 = __importDefault(require("./routes/auth"));
 const person_1 = __importDefault(require("./routes/person"));
 const payment_1 = __importDefault(require("./routes/payment"));
 const note_1 = __importDefault(require("./routes/note"));
+const statistics_1 = __importDefault(require("./routes/statistics"));
 const app = (0, express_1.default)();
 //
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 //
 app.use((0, body_parser_1.json)());
-// mongoose.set('strictQuery', false);
+mongoose_1.default.set("strictQuery", false);
 const portStatus = process.env.PORT
     ? "https://sbs999.github.io"
     : "http://localhost:3000";
@@ -30,6 +31,7 @@ app.use(auth_1.default);
 app.use(person_1.default);
 app.use(payment_1.default);
 app.use(note_1.default);
+app.use(statistics_1.default);
 app.use((error, req, res, next) => {
     const message = error.message;
     res.status(400).json(message);
