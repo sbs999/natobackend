@@ -6,6 +6,7 @@ import personsRouter from "./routes/person";
 import paymentRouter from "./routes/payment";
 import noteRouter from "./routes/note";
 import statisticsRouter from "./routes/statistics";
+import mediaRouter from "./routes/media.routes";
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use(personsRouter);
 app.use(paymentRouter);
 app.use(noteRouter);
 app.use(statisticsRouter);
+app.use("media", mediaRouter);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   const message = error.message;
