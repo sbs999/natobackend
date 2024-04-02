@@ -22,7 +22,7 @@ export const updateProductPurchaseLocation: RequestHandler = async (
       { _id: id },
       {
         ...(updateData.name ? { name: updateData.name } : {}),
-        ...(updateData.description
+        ...(typeof updateData?.description === "string"
           ? { description: updateData.description }
           : {}),
       }

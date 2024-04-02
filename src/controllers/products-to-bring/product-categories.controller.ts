@@ -30,7 +30,7 @@ export const updateProductCategory: RequestHandler = async (req, res, next) => {
       { _id: id },
       {
         ...(updateData.name ? { name: updateData.name } : {}),
-        ...(updateData.description
+        ...(typeof updateData?.description === "string"
           ? { description: updateData.description }
           : {}),
       }
