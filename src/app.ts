@@ -7,6 +7,7 @@ import paymentRouter from "./routes/payment";
 import noteRouter from "./routes/note";
 import statisticsRouter from "./routes/statistics";
 import mediaRouter from "./routes/media.routes";
+import productsToBringRouter from "./routes/products-to-bring.routes";
 
 const app = express();
 
@@ -23,7 +24,7 @@ const portStatus = process.env.PORT
   : "http://localhost:3000";
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.setHeader("Access-Control-Allow-Origin", portStatus);
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
@@ -37,7 +38,8 @@ app.use(personsRouter);
 app.use(paymentRouter);
 app.use(noteRouter);
 app.use(statisticsRouter);
-app.use("media", mediaRouter);
+app.use("/media", mediaRouter);
+app.use("/products-to-bring", productsToBringRouter);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   const message = error.message;
@@ -45,7 +47,7 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 const mongoUrl = process.env.MONGODB_URL || "";
-mongoose.connect(mongoUrl).then(() => {
+mongoose.connect(mongoUrl).then((data) => {
   const port = process.env.PORT || 8080;
   app.listen(port);
 });

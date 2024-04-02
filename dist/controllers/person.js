@@ -33,8 +33,8 @@ const addPerson = async (req, res, next) => {
         const newPerson = await service.addPersonLogic({ ...body, date });
         res.json({ result: newPerson });
     }
-    catch (eror) {
-        next(eror);
+    catch (error) {
+        next(error);
     }
 };
 exports.addPerson = addPerson;

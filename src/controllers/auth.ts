@@ -11,7 +11,7 @@ export const SignIn: RequestHandler = async (req, res, next) => {
   try {
     const history = await History.findById("63add4fe312a99c884ab7971");
     if (!history) {
-      throw new Error("eror in totalMonyInHistory!");
+      throw new Error("erorr in totalMonyInHistory!");
     }
 
     if (history.secPas.toString() === password.toString()) {

@@ -1,4 +1,4 @@
-export interface GeneratePreSignedUrlCredentials {
+export interface IGeneratePreSignedUrlCredentials {
   objectKey?: string;
   contentType?: string;
 }

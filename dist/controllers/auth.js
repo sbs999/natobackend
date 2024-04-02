@@ -13,7 +13,7 @@ const SignIn = async (req, res, next) => {
     try {
         const history = await History_1.default.findById("63add4fe312a99c884ab7971");
         if (!history) {
-            throw new Error("eror in totalMonyInHistory!");
+            throw new Error("erorr in totalMonyInHistory!");
         }
         if (history.secPas.toString() === password.toString()) {
             const token = jsonwebtoken_1.default.sign({}, process.env.JSON_WEB_TOKEN || "");
