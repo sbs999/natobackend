@@ -14,7 +14,7 @@ const updateProductPurchaseLocation = async (req, res, next) => {
         }
         await product_purchase_locations_model_1.default.updateOne({ _id: id }, {
             ...(updateData.name ? { name: updateData.name } : {}),
-            ...(updateData.description
+            ...(typeof (updateData === null || updateData === void 0 ? void 0 : updateData.description) === "string"
                 ? { description: updateData.description }
                 : {}),
         });

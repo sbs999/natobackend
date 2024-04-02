@@ -26,6 +26,13 @@ export const updateProductCategory: RequestHandler = async (req, res, next) => {
 
     await CheckCategoryExistence(id);
 
+    console.log("Debugging log", {
+      ...(updateData.name ? { name: updateData.name } : {}),
+      ...(typeof updateData?.description === "string"
+        ? { description: updateData.description }
+        : {}),
+    });
+
     await ProductCategoryModel.updateOne(
       { _id: id },
       {
