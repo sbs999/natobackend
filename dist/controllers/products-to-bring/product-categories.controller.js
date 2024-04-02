@@ -24,12 +24,6 @@ const updateProductCategory = async (req, res, next) => {
     try {
         const { id, updateData } = req.body;
         await (0, exports.CheckCategoryExistence)(id);
-        console.log("Debugging log", {
-            ...(updateData.name ? { name: updateData.name } : {}),
-            ...(typeof (updateData === null || updateData === void 0 ? void 0 : updateData.description) === "string"
-                ? { description: updateData.description }
-                : {}),
-        });
         await product_categories_model_1.default.updateOne({ _id: id }, {
             ...(updateData.name ? { name: updateData.name } : {}),
             ...(typeof (updateData === null || updateData === void 0 ? void 0 : updateData.description) === "string"
