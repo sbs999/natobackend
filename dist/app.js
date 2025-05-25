@@ -13,6 +13,7 @@ const note_1 = __importDefault(require("./routes/note"));
 const statistics_1 = __importDefault(require("./routes/statistics"));
 const media_routes_1 = __importDefault(require("./routes/media.routes"));
 const products_to_bring_routes_1 = __importDefault(require("./routes/products-to-bring.routes"));
+const products_with_prices_routes_1 = __importDefault(require("./routes/products-with-prices.routes"));
 const app = (0, express_1.default)();
 //
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -36,6 +37,7 @@ app.use(note_1.default);
 app.use(statistics_1.default);
 app.use("/media", media_routes_1.default);
 app.use("/products-to-bring", products_to_bring_routes_1.default);
+app.use("/products-with-prices", products_with_prices_routes_1.default);
 app.use((error, req, res, next) => {
     const message = error.message;
     res.status(400).json(message);

@@ -8,6 +8,7 @@ import noteRouter from "./routes/note";
 import statisticsRouter from "./routes/statistics";
 import mediaRouter from "./routes/media.routes";
 import productsToBringRouter from "./routes/products-to-bring.routes";
+import productsWithPricesRouter from "./routes/products-with-prices.routes";
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use(noteRouter);
 app.use(statisticsRouter);
 app.use("/media", mediaRouter);
 app.use("/products-to-bring", productsToBringRouter);
+app.use("/products-with-prices", productsWithPricesRouter);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   const message = error.message;
